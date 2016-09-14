@@ -1,2 +1,0 @@
-# EndlessRunner
-First SourceTree project
