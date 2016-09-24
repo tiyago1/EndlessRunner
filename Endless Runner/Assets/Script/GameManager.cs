@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
 	public void Initalize()
 	{
         LastInstantiatedBlockPosition = new Vector3(0.0f,0.0f,-10.0f);
+        StartCoroutine(Spawner());
 	}
 	
 	#endregion // Public Methods
@@ -47,7 +48,16 @@ public class GameManager : MonoBehaviour
         Vector3 newBlockPosition = LastInstantiatedBlockPosition + new Vector3(0.0f, 0.0f, 10.0f);
         LastInstantiatedBlockPosition = newBlockPosition; 
         GameObject instantiatedBlock = (GameObject)Instantiate(BlockPrefab, newBlockPosition, Quaternion.identity);
-	}	
-	
+	}
+
+    private IEnumerator Spawner()
+    {
+        while (true)
+        {
+            InstantiateBlock();
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
+
 	#endregion //Private Methods
 }
