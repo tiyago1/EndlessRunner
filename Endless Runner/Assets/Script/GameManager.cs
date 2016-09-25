@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +13,9 @@ public class GameManager : MonoBehaviour
 
     public GameObject BlockPrefab;
     private Vector3 LastInstantiatedBlockPosition;
+
+    public  List<Platform> Platforms;
+    public List<float> PlatformsPositionZ;
 
 	#endregion //Fields
 	
@@ -27,6 +32,11 @@ public class GameManager : MonoBehaviour
         {
             InstantiateBlock();
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            GetLastPlatformsTransform();
+        }
 	}
 	
 	#endregion //Unity Methods
@@ -36,7 +46,7 @@ public class GameManager : MonoBehaviour
 	public void Initalize()
 	{
         LastInstantiatedBlockPosition = new Vector3(0.0f,0.0f,-10.0f);
-        StartCoroutine(Spawner());
+        //StartCoroutine(Spawner());
 	}
 	
 	#endregion // Public Methods
@@ -49,6 +59,27 @@ public class GameManager : MonoBehaviour
         LastInstantiatedBlockPosition = newBlockPosition; 
         GameObject instantiatedBlock = (GameObject)Instantiate(BlockPrefab, newBlockPosition, Quaternion.identity);
 	}
+
+    private void EndlessBlock()
+    {
+
+    }
+
+    public float GetLastPlatformsTransform()
+    {
+        PlatformsPositionZ.Clear();
+
+        foreach (Platform item in Platforms)
+        {
+            PlatformsPositionZ.Add(item.transform.position.z);
+        }
+
+        float[] PlatformDescend;
+
+        PlatformDescend = PlatformsPositionZ.OrderByDescending(it => it).ToArray();
+
+        return PlatformDescend[0];
+    }
 
     private IEnumerator Spawner()
     {
